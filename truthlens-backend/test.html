@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Firebase Token</title>
+</head>
+<body>
+    <h2>Firebase Token Generator</h2>
+    <input type="email" id="email" placeholder="Email" value="test@example.com">
+    <input type="password" id="password" placeholder="Password" value="password123">
+    <button id="loginButton">Login and Get Token</button>
+    
+    <hr>
+    <h3>Your ID Token (Bearer Token):</h3>
+    <textarea id="tokenArea" rows="10" cols="80" readonly></textarea>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+  apiKey: "AIzaSyCqD0RcZI7YIQ6131vd9ZSPqnC8-Xsgtsk",
+  authDomain: "truthlens-25e44.firebaseapp.com",
+  projectId: "truthlens-25e44",
+  storageBucket: "truthlens-25e44.firebasestorage.app",
+  messagingSenderId: "855255331965",
+  appId: "1:855255331965:web:64002e43185e0f816fed14",
+  measurementId: "G-DXCM5ZRFSG"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const loginButton = document.getElementById('loginButton');
+        const tokenArea = document.getElementById('tokenArea');
+
+        loginButton.onclick = async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const idToken = await userCredential.user.getIdToken();
+                
+                // Success! Display the token
+                tokenArea.value = idToken;
+                console.log("Token acquired:", idToken);
+                alert("Token copied to text box!");
+
+            } catch (error) {
+                console.error("Login Failed:", error);
+                alert("Login Failed: " + error.message);
+            }
+        };
+    </script>
+</body>
+</html>
